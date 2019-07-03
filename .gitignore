@@ -1,0 +1,49 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+pom.xml.versionsBackup
+.mvn/
+mvnw
+mvnw.cmd
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+*.ipr
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*.java~
+*.properties~
+*.xml~
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+# gradle output
+build/
+.gradleBuild/
+.gradle/
+gradle/
+*_.java
+
+# jacoco ignore
+jacoco.exec
+jacoco-it.exec
