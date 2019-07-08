@@ -45,7 +45,7 @@
     </build>
 
     <modules>
-        <module>SpringBoot-Hello</module>
+        <module>SpringBoot-HelloWorld</module>
     </modules>
 
 

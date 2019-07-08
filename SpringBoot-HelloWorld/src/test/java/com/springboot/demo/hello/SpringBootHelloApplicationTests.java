@@ -15,7 +15,7 @@ import java.net.URL;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SpringBootHelloApplicationTests {
 
     @LocalServerPort
@@ -28,14 +28,14 @@ public class SpringBootHelloApplicationTests {
 
     @Before
     public void setUp() throws Exception {
-    //  因为我们修改了 content-path 所以请求后面要带上
-        this.base = new URL("http://localhost:" + "8080" + "/springboot-hello");
+    //  因为我们修改了 content-path 所以请求后面要带上springboot-hello
+        this.base = new URL("http://localhost:" + port + "/springboot-hello");
     }
 
     @Test
-    public void contextLoads() {
+    public void demo() {
         ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
-        assertEquals(response.getBody(), "Hello battcn");
+        assertEquals(response.getBody(), "Hello World!");
     }
 
 }
