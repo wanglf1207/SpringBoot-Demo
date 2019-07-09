@@ -74,5 +74,8 @@ public class SpringBootHelloApplicationTests {
 }
 
 ```
+### 自定义banner
+借助在线工具生成banner文件，将文件放到resource文件夹中
+http://www.bootschool.net/ascii
 
 ## SpringBoot配置
