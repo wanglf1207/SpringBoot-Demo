@@ -28,12 +28,11 @@ public class SpringBootHelloApplicationTests {
 
     @Before
     public void setUp() throws Exception {
-    //  因为我们修改了 content-path 所以请求后面要带上springboot-hello
         this.base = new URL("http://localhost:" + port + "/springboot-hello");
     }
 
     @Test
-    public void demo() {
+    public void testHello() {
         ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
         assertEquals(response.getBody(), "Hello World!");
     }
