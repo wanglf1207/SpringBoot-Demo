@@ -88,4 +88,25 @@ http://localhost:8080/dev/properties/connection
 * 掌握编写自定义配置
 
 * 掌握外部命令引导配置的方式
-在命令行输入java -jar chapter2-0.0.1-SNAPSHOT.jar --spring.profiles.active=test --my1.age=32
+在命令行输入java -jar app.jar --spring.profiles.active=test --connection.username=root
+
+遇到了一个坑，记录一下：
+springboot2.1.6 spring-boot-configuration-processor一直下载不到，把国内阿里的镜像去掉使用默认的就好了
+特此记录-20190709
+电脑上maven的镜像一直是阿里的
+```xml
+<mirror>
+      <id>alimaven</id>
+      <name>aliyun maven</name>
+      <url>
+          http://maven.aliyun.com/nexus/content/groups/public/
+      </url>
+      <mirrorOf>central</mirrorOf>        
+    </mirror>
+```
+## 整合Thymeleaf模板
+Thymeleaf是现代化服务器端的Java模板引擎，不同与其它几种模板的是Thymeleaf的语法更加接近HTML，并且具有很高的扩展性。
+
+* 访问地址：http://localhost:8080/index
+
+
