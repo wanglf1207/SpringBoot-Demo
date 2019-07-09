@@ -79,3 +79,13 @@ public class SpringBootHelloApplicationTests {
 http://www.bootschool.net/ascii
 
 ## SpringBoot配置
+* 运行方法：浏览器输入 
+http://localhost:8080/dev/properties/default
+http://localhost:8080/dev/properties/connection
+
+* 掌握@ConfigurationProperties、@PropertySource 等注解的用法及作用
+
+* 掌握编写自定义配置
+
+* 掌握外部命令引导配置的方式
+在命令行输入java -jar chapter2-0.0.1-SNAPSHOT.jar --spring.profiles.active=test --my1.age=32
