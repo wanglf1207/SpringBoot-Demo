@@ -5,7 +5,7 @@ SpringBoot 是为了简化 Spring 应用的创建、运行、调试、部署等�
 SpringBoot-HelloWorld  
 
 ### 项目的创建
-![创建项目](/SpringBoot-Demo/SpringBoot-HelloWorld/src/main/resources/images/createModule.jpg)
+![创建项目](./SpringBoot-HelloWorld/src/main/resources/images/createModule.jpg)
 ```$java
 server.port=8080
 server.servlet.context-path=/springboot-hello
