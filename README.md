@@ -145,3 +145,20 @@ public class ThymeleafController {
 ```
 
 ## 使用JdbcTemplate访问数据库
+
+创建数据库
+```sql
+create database springboot;
+```
+创建表
+```sql
+use springboot;
+
+create table user(
+  id int(8) not null auto_increment,
+  username varchar(50) not null,
+  password varchar(50) not null,
+  primary key (id)
+);
+
+```

@@ -1,16 +1,48 @@
 package com.springboot.demo.jdbctemplate;
 
+import com.springboot.demo.jdbctemplate.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
+/**
+ * 本来这里手误，SpringBootJdbcTemplateApplication写成SpringBootJdbcTemplateApplicationTest了，
+ * 一直报ApplicationContextException: Unable to start ServletWebServerApplicationContext du
+ */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = SpringBootJdbcTemplateApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
 public class SpringBootJdbcTemplateApplicationTests {
 
+    private static final Logger logger = LoggerFactory.getLogger(SpringBootJdbcTemplateApplicationTests.class);
+
+    @Autowired
+    private TestRestTemplate testRestTemplate;
+
+    @LocalServerPort
+    private int port;
+
     @Test
-    public void contextLoads() {
+    public void addUser() {
+        testRestTemplate.postForEntity("http://localhost:" + port + "/users", new User("wanglf", "wanglf1207"), String.class);
+        logger.info("添加用户成功");
     }
 
+    @Test
+    public void testExchange() {
+        ResponseEntity<List<User>> result = testRestTemplate.exchange("http://localhost:" + port + "/users/queryUsers", HttpMethod.GET, null, new ParameterizedTypeReference<List<User>>() {});
+        List<User> userList = result.getBody();
+        logger.info("查询到的用户列表为{}",userList);
+    }
 }
