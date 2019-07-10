@@ -4,7 +4,7 @@ SpringBoot 是为了简化 Spring 应用的创建、运行、调试、部署等�
 ## SpringBoot入门
 SpringBoot-HelloWorld  
 
-```$xslt
+```$java
 server.port=8080
 server.servlet.context-path=/springboot-hello
 local.server.port=8080
@@ -90,7 +90,9 @@ http://localhost:8080/dev/properties/connection
 * 掌握外部命令引导配置的方式
 在命令行输入java -jar app.jar --spring.profiles.active=test --connection.username=root
 
-遇到了一个坑，记录一下：
+* 在真实的应用中，常常会有多个环境（如：开发，测试，生产等），不同的环境数据库连接都不一样，这个时候就需要用到spring.profile.active 的强大功能了，它的格式为 application-{profile}.properties，这里的 application 为前缀不能改，{profile} 是我们自己定义的。
+
+* 遇到了一个坑，记录一下：
 springboot2.1.6 spring-boot-configuration-processor一直下载不到，把国内阿里的镜像去掉使用默认的就好了
 特此记录-20190709
 电脑上maven的镜像一直是阿里的
@@ -109,4 +111,33 @@ Thymeleaf是现代化服务器端的Java模板引擎，不同与其它几种模�
 
 * 访问地址：http://localhost:8080/index
 
+将html文件放到resources/templates目录下。在html标签中接入thymeleaf命名空间
+```xml
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+```
 
+controller中内容如下
+```java
+@Controller
+@RequestMapping
+public class ThymeleafController {
+
+    @GetMapping("/index")
+    public ModelAndView index() {
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("index");
+        mv.addObject("title","这是我的第一个thymleaf页面");
+        mv.addObject("desc","坚持各种学习");
+
+        Student student = new Student();
+        student.setName("王利峰");
+        student.setAge(35);
+        student.setEmail("wanglf1207@163.com");
+
+        mv.addObject("student",student);
+        return mv;
+    }
+}
+```
