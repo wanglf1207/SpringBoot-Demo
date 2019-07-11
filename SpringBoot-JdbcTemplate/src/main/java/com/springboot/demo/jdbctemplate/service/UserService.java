@@ -9,4 +9,10 @@ public interface UserService {
     int addUser(User user);
 
     List<User> queryUsers();
+
+    User queryUserById(Long id);
+
+    int updateUser(User user);
+
+    int deleteUserById(Long id);
 }

@@ -25,8 +25,26 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int insertUser(User user) {
+    public int insert(User user) {
         String sql = "insert into user(username, password) values(?, ?)";
         return jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
+    }
+
+    @Override
+    public User selectById(Long id) {
+        String sql = "select * from user where id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper<>(User.class));
+    }
+
+    @Override
+    public int update(User user) {
+        String updateSql = "update user set username=?, password=? where id=?";
+        return jdbcTemplate.update(updateSql,user.getUsername(),user.getPassword(),user.getId());
+    }
+
+    @Override
+    public int deleteById(Long id) {
+        String deleteSQL = "delete from user where id = ?";
+        return jdbcTemplate.update(deleteSQL,id);
     }
 }
