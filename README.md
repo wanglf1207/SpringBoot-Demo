@@ -173,15 +173,10 @@ com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zon
 ```
 
 解决办法：
-* （1）使用 server mysql start命令启动mysql
-* （2）在mysql中执行show variables like '%time_zone%';
-* （3）输入select nows();
-* （4）在终端执行date命令
-* 此时发现终端显示的时间和MySql中显示的时间不一致，这就是问题所在。
-* （5）在mysql中执行 set time_zone=SYSTEM;
-* （6）再次在mysql中执行select now();
-
-
-（6）执行 set global time_zone='+8:00';
-（7）执行 flush privileges;
-（7）再次执行hive命令，问题解决。
+* 在mysql中执行show variables like '%time_zone%';
+* 输入select nows();
+* 在终端执行date命令 此时发现终端显示的时间和MySql中显示的时间不一致，这就是问题所在。
+* 在mysql中执行 set time_zone=SYSTEM;
+* 再次在mysql中执行select now();
+* 执行 set global time_zone='+8:00';
+* 执行 flush privileges;
