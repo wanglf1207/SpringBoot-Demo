@@ -40,7 +40,7 @@ public class SpringBootJdbcTemplateApplicationTests {
     }
 
     @Test
-    public void testExchange() {
+    public void queryAllUsers() {
         ResponseEntity<List<User>> result = testRestTemplate.exchange("http://localhost:" + port + "/users/queryUsers", HttpMethod.GET, null, new ParameterizedTypeReference<List<User>>() {});
         List<User> userList = result.getBody();
         logger.info("查询到的用户列表为{}",userList);
