@@ -15,11 +15,6 @@ public class User implements Serializable {
     @Transient
     private String email;
 
-    /**
-     * 不写默认的构造方法报错
-     * com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.springboot.demo.jdbctemplate.domain.User` (no Creators, like default construct, exist):
-     * cannot deserialize from Object value (no delegate- or property-based Creator)
-     */
     public User() {
 
     }

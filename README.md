@@ -164,7 +164,7 @@ create table user(
 ```
 
 连接数据库的时候碰到一个错误：
-```java
+```text
 com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value 'EDT' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_121]
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_121]
@@ -205,3 +205,78 @@ ddl-auto 几种属性
 * create-drop： 每次运行程序时会先创建表结构，然后待程序结束时清空表
 * upadte： 每次运行程序，没有表时会创建表，如果对象发生改变会更新表结构，原有数据不会清空，只会更新（推荐使用）
 * validate： 运行程序会校验数据与数据库的字段类型是否相同，字段不同会报错
+
+创建实体类User
+```java
+package com.springboot.demo.springdatajpa.domain;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity(name="user1")
+public class User implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String password;
+
+    @Transient
+    private String email;
+    
+    public User() {
+
+    }
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String toString() {
+        return "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'';
+    }
+}
+
+```
+
