@@ -180,3 +180,21 @@ com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zon
 * 再次在mysql中执行select now();
 * 执行 set global time_zone='+8:00';
 * 执行 flush privileges;
+
+## 集成Spring Data JPA
+Spring JdbcTemplate的使用，对比原始的JDBC而言，它更加的简洁。但随着表的增加，重复的CRUD工作让我们苦不堪言，这时候Spring Data Jpa的作用就体现出来了…
+
+在application.properties中添加数据库配置信息
+```properties
+spring.datasource.url=jdbc:mysql://192.168.231.130:3306/springboot?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+spring.datasource.username=root
+spring.datasource.password=Wanglf1207!
+
+# JPA配置
+spring.jpa.hibernate.ddl-auto=update
+# 输出日志
+spring.jpa.show-sql=true
+# 数据库类型
+spring.jpa.database=mysql
+
+```
