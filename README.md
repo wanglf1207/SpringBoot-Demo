@@ -280,3 +280,31 @@ public class User implements Serializable {
 
 ```
 
+定义数据访问接口
+```java
+@Repository
+public interface UserRepository extends JpaRepository<User,Long> {
+}
+```
+创建UserRepository数据访问层接口，需要继承JpaRepository<T,K>，第一个泛型参数是实体对象的名称，第二个是主键类型。只需要这样简单的配置，该UserRepository就拥常用的CRUD功能，JpaRepository本身就包含了常用功能，剩下的查询我们按照规范写接口即可。
+
+测试类
+```java
+
+@Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void testSave() {
+        final  User user = userRepository.save(new User("u1","p1"));
+        logger.info("保存用户成功{}",user);
+    }
+
+    @Test
+    public void testFindAll() {
+        List<User> userList = userRepository.findAll();
+        logger.info("查询用户成功{}",userList);
+    }
+```
+可以看出，使用springdata JPA比JdbcTemplate要简单很多。
+
