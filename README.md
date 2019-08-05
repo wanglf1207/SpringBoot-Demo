@@ -2,23 +2,21 @@ SpringBoot 是为了简化 Spring 应用的创建、运行、调试、部署等�
 未接触 SpringBoot 之前，搭建一个普通的 WEB 工程往往需要花费很长时间，使用SpringBoot可以快速的搭建一个SpringBoot项目。
 
 ## SpringBoot入门
-SpringBoot-HelloWorld  
+对应项目为SpringBoot-HelloWorld  
 
 ### 项目的创建
 ![创建项目](./SpringBoot-HelloWorld/src/main/resources/images/createModule.jpg)
+
+
+修改配置文件/resources/application.properties
 ```$java
 server.port=8080
 server.servlet.context-path=/springboot-hello
 local.server.port=8080
 ```
 
+创建HelloWorldController
 ```java
-package com.springboot.demo.hello.controller;
-
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @EnableAutoConfiguration
@@ -292,19 +290,19 @@ public interface UserRepository extends JpaRepository<User,Long> {
 ```java
 
 @Autowired
-    private UserRepository userRepository;
+private UserRepository userRepository;
 
-    @Test
-    public void testSave() {
-        final  User user = userRepository.save(new User("u1","p1"));
-        logger.info("保存用户成功{}",user);
-    }
+@Test
+public void testSave() {
+    final  User user = userRepository.save(new User("u1","p1"));
+    logger.info("保存用户成功{}",user);
+}
 
-    @Test
-    public void testFindAll() {
-        List<User> userList = userRepository.findAll();
-        logger.info("查询用户成功{}",userList);
-    }
+@Test
+public void testFindAll() {
+    List<User> userList = userRepository.findAll();
+    logger.info("查询用户成功{}",userList);
+}
 ```
 可以看出，使用springdata JPA比JdbcTemplate要简单很多。
 
