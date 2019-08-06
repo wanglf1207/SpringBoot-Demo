@@ -306,3 +306,69 @@ public void testFindAll() {
 ```
 可以看出，使用springdata JPA比JdbcTemplate要简单很多。
 
+## 整合Lettuce Redis
+Spring Boot 除了支持常见的ORM框架外，更是对常用的中间件提供了非常好封装，随着Spring Boot2.x的到来，支持的组件越来越丰富，也越来越成熟，其中对Redis的支持不仅仅是丰富了它的API，更是替换掉底层Jedis的依赖，取而代之换成了Lettuce(生菜)
+
+## RabbitMQ
+RabbitMQ是用Erlang语言开发的基于高级消息队列协议(AMQP)的消息队列中间件。因为它开源，而且版本更新快，所以在国内互联网公司被广泛使用。其它使用的消息中间件还有ActiveMQ，RocketMQ，Kafka等，有兴趣的同学可以自行研究。
+
+* 还有2个专业术语要了解下：
+生产者：发送消息的应用程序被称为生产者。
+消费者：接收消息的应用程序被称为消费者。
+
+* 本次采用RabbitMQ源码安装，具体安装步骤已经整理到《皓月当空》文档里。
+
+首先加入连接RabbitMQ所需要的maven依赖
+```xml
+ <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-amqp</artifactId>
+ </dependency>
+```
+
+写一个消费者程序
+```java
+public class Producer {
+    private final static String QUEUE_NAME = "hello";
+
+    public static void main(String[] args) throws IOException, TimeoutException {
+        // 创建连接
+        ConnectionFactory factory = new ConnectionFactory();
+        // 设置 RabbitMQ 的主机名
+        factory.setHost("192.168.231.139");
+
+        /**
+         * 下面三行不写也可以创建队列并将消息放到队列上
+         * 目前还搞不清楚为什么-20190806
+         */
+        factory.setUsername("wanghao");
+        factory.setPassword("wanghao");
+        factory.setPort(5672);
+
+        // 创建一个连接
+        Connection connection = factory.newConnection();
+        // 创建一个通道
+        Channel channel = connection.createChannel();
+        /**
+         * 指定一个队列,不存在的话自动创建
+         * 如果将下面这行注释掉，程序也不会报错
+         */
+        // channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        // 发送消息
+        String message = "Hello World!";
+        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+        System.out.println(" [x] Sent '" + message + "'");
+        // 关闭频道和连接
+        channel.close();
+        connection.close();
+    }
+}
+```
+上面程序要注意一个问题，我现在也没想清楚，就是写不写下面三句话看上去好像没关系
+```java
+factory.setUsername("wanghao");
+factory.setPassword("wanghao");
+factory.setPort(5672);
+```
+
+
