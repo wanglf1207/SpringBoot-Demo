@@ -32,7 +32,7 @@ public class Producer {
          * 指定一个队列,不存在的话自动创建
          * 如果将下面这行注释掉，程序也不会报错
          */
-        // channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
         // 发送消息
         String message = "Hello World!";
         channel.basicPublish("", QUEUE_NAME, null, message.getBytes());

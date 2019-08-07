@@ -308,6 +308,40 @@ public void testFindAll() {
 
 ## 整合Lettuce Redis
 Spring Boot 除了支持常见的ORM框架外，更是对常用的中间件提供了非常好封装，随着Spring Boot2.x的到来，支持的组件越来越丰富，也越来越成熟，其中对Redis的支持不仅仅是丰富了它的API，更是替换掉底层Jedis的依赖，取而代之换成了Lettuce(生菜)
+### Redis介绍
+Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。相比Memcached它支持存储的类型相对更多（字符、哈希、集合、有序集合、列表、GEO），同时Redis是线程安全的。2010年3月15日起，Redis的开发工作由VMware主持，2013年5月开始，Redis的开发由Pivotal赞助。
+
+
+```java
+Caused by: io.lettuce.core.RedisCommandExecutionException: ERR Client sent AUTH, but no password is set
+	at io.lettuce.core.ExceptionFactory.createExecutionException(ExceptionFactory.java:135)
+	at io.lettuce.core.ExceptionFactory.createExecutionException(ExceptionFactory.java:108)
+	at io.lettuce.core.protocol.AsyncCommand.completeResult(AsyncCommand.java:120)
+	at io.lettuce.core.protocol.AsyncCommand.complete(AsyncCommand.java:111)
+	at io.lettuce.core.protocol.CommandHandler.complete(CommandHandler.java:646)
+	at io.lettuce.core.protocol.CommandHandler.decode(CommandHandler.java:604)
+	at io.lettuce.core.protocol.CommandHandler.channelRead(CommandHandler.java:556)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	... 1 more
+```
+上面的的错误提示：客户端发送认证，但是redis没有设置密码，我的redis服务器的确没有设置密码。
+他妈的在redis.conf配置文件中修改了requirepass居然不好用，后来在命令行中设置了临时密码才生效,config set requirepass wanglf1207
+### Luttuce介绍
+Lettuce 和 Jedis 的都是连接Redis Server的客户端程序。Jedis在实现上是直连redis server，多线程环境下非线程安全，除非使用连接池，为每个Jedis实例增加物理连接。Lettuce基于Netty的连接实例（StatefulRedisConnection），可以在多个线程间并发访问，且线程安全，满足多线程环境下的并发访问，同时它是可伸缩的设计，一个连接实例不够的情况也可以按需增加连接实例。
 
 ## RabbitMQ
 RabbitMQ是用Erlang语言开发的基于高级消息队列协议(AMQP)的消息队列中间件。因为它开源，而且版本更新快，所以在国内互联网公司被广泛使用。其它使用的消息中间件还有ActiveMQ，RocketMQ，Kafka等，有兴趣的同学可以自行研究。
@@ -371,4 +405,35 @@ factory.setPassword("wanghao");
 factory.setPort(5672);
 ```
 
+现在编写一个消费者的程序
+
+```java
+
+public class Consumer {
+    private final static String QUEUE_NAME = "hello";
+
+    public static void main(String[] args) throws IOException, TimeoutException {
+        // 创建连接
+        ConnectionFactory factory = new ConnectionFactory();
+        // 设置 RabbitMQ 的主机名
+        factory.setHost("192.168.231.139");
+        // 创建一个连接
+        Connection connection = factory.newConnection();
+        // 创建一个通道
+        Channel channel = connection.createChannel();
+        // 指定一个队列
+        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        // 创建队列消费者
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
+                                       AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String message = new String(body, "UTF-8");
+                System.out.println("Received Message '" + message + "'");
+            }
+        };
+        channel.basicConsume(QUEUE_NAME, true, consumer);
+    }
+}
+```
 
