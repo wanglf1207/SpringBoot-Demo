@@ -21,13 +21,11 @@ public class SpringBootLettuceRedisApplicationTests {
 
     private static final Logger log = LoggerFactory.getLogger(SpringBootLettuceRedisApplicationTests.class);
 
-
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
-
 
     @Test
     public void get() {
