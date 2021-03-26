@@ -9,7 +9,7 @@ SpringBoot 是为了简化 Spring 应用的创建、运行、调试、部署等�
 
 
 修改配置文件/resources/application.properties
-```$java
+```properties
 server.port=8080
 server.servlet.context-path=/springboot-hello
 local.server.port=8080
